@@ -1,0 +1,31 @@
+name: Modularize BM site
+on:
+  push:
+    paths:
+      - 'tools/split_master.py'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  split:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Split embedded master safely
+        run: python tools/split_master.py
+      - name: Validate generated HTML
+        run: |
+          test -f modules/sistem.html
+          test -f modules/pemahaman.html
+          test -f modules/komsas.html
+          test -f modules/novel.html
+          test -f modules/pemindahan.html
+          grep -q 'modules/pemahaman.html' master.html
+      - name: Commit modular files
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add master.html modules/
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Split master into maintainable modules'
+          git push
