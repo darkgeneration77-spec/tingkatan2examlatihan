@@ -1,7 +1,7 @@
 from pathlib import Path
 import re,json,base64
 
-# Migration trigger 2026-09-12 v111.
+# Migration trigger 2026-09-12 v112.
 ROOT=Path(__file__).resolve().parents[1]
 master=ROOT/'master.html'
 s=master.read_text(encoding='utf-8')
