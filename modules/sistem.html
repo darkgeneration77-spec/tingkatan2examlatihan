@@ -289,14 +289,15 @@ buildWorldList();render();
 <script id="world-batch-mode-v20260923">
 (function(){
 const PER_PAGE=5; let page=0,answers=[];
-function qs(){try{return DATA[String(currentWorld||1)].questions||[]}catch(e){return[]}}
+function worldNo(){try{return (typeof world!=="undefined"&&world)||Number(localStorage.getItem("t2bm_v2_last_world"))||1}catch(e){return 1}}
+function qs(){try{return DATA[String(worldNo())].questions||[]}catch(e){return[]}}
 function ensure(){
  const old=document.querySelector('.mainGrid > section.card'); if(!old||document.getElementById('worldBatchPanel'))return;
  const panel=document.createElement('section');panel.className='card';panel.id='worldBatchPanel';old.parentNode.insertBefore(panel,old);old.style.display='none';panel.style.display='block';render();
 }
 function render(){
  const a=qs(),pages=Math.ceil(a.length/PER_PAGE),start=page*PER_PAGE,end=Math.min(start+PER_PAGE,a.length),el=document.getElementById('worldBatchPanel');if(!el)return;
- el.innerHTML='<div class="small">World '+String(window.currentWorld||1).padStart(2,'0')+' · '+a.length+' soalan · '+PER_PAGE+' soalan setiap halaman</div><h2>Halaman '+(page+1)+' / '+pages+'</h2>'+
+ el.innerHTML='<div class="small">World '+String(worldNo()).padStart(2,'0')+' · '+a.length+' soalan · '+PER_PAGE+' soalan setiap halaman</div><h2>Halaman '+(page+1)+' / '+pages+'</h2>'+
  a.slice(start,end).map((q,j)=>{let i=start+j;return '<div class="batch-q"><h4>Soalan '+(i+1)+'. '+q.q+'</h4>'+q.o.map((o,k)=>'<label><input type="radio" name="bq'+i+'" value="'+k+'" '+(answers[i]===k?'checked':'')+'> '+String.fromCharCode(65+k)+'. '+o+'</label>').join('')+'</div>'}).join('')+
  '<div class="batch-nav"><button class="action secondary" id="bp">Halaman Sebelumnya</button>'+(page<pages-1?'<button class="action primary" id="bn">Halaman Seterusnya</button>':'<button class="action primary" id="bs">Hantar Seluruh World & Semak</button>')+'</div>';
  el.querySelectorAll('input[type=radio]').forEach(x=>x.onchange=()=>{answers[+x.name.slice(2)]=+x.value});
