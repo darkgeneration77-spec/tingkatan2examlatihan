@@ -282,4 +282,36 @@ buildWorldList();render();
   const mo=new MutationObserver(()=>setTimeout(scan,120));
   addEventListener("DOMContentLoaded",()=>{mo.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:["class","style"]});});
 })();
+</script><style id="world-batch-ui-v20260923">
+/* World batch mode: several questions per page, mark only after whole World is submitted */
+#worldBatchPanel{display:none}.batch-q{border:1px solid var(--line,#dfe5ee);border-radius:16px;padding:16px;margin:14px 0;background:#fff}.batch-q h4{margin:0 0 10px;font-size:1.08rem}.batch-q label{display:block;border:1px solid var(--line,#dfe5ee);border-radius:12px;padding:10px 12px;margin:8px 0;cursor:pointer}.batch-q label:has(input:checked){background:var(--accent2,#edf1ff);border-color:#8798ee}.batch-nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:16px}
+</style>
+<script id="world-batch-mode-v20260923">
+(function(){
+const PER_PAGE=5; let page=0,answers=[];
+function qs(){try{return DATA[String(currentWorld||1)].questions||[]}catch(e){return[]}}
+function ensure(){
+ const old=document.querySelector('.mainGrid > section.card'); if(!old||document.getElementById('worldBatchPanel'))return;
+ const panel=document.createElement('section');panel.className='card';panel.id='worldBatchPanel';old.parentNode.insertBefore(panel,old);old.style.display='none';panel.style.display='block';render();
+}
+function render(){
+ const a=qs(),pages=Math.ceil(a.length/PER_PAGE),start=page*PER_PAGE,end=Math.min(start+PER_PAGE,a.length),el=document.getElementById('worldBatchPanel');if(!el)return;
+ el.innerHTML='<div class="small">World '+String(window.currentWorld||1).padStart(2,'0')+' · '+a.length+' soalan · '+PER_PAGE+' soalan setiap halaman</div><h2>Halaman '+(page+1)+' / '+pages+'</h2>'+
+ a.slice(start,end).map((q,j)=>{let i=start+j;return '<div class="batch-q"><h4>Soalan '+(i+1)+'. '+q.q+'</h4>'+q.o.map((o,k)=>'<label><input type="radio" name="bq'+i+'" value="'+k+'" '+(answers[i]===k?'checked':'')+'> '+String.fromCharCode(65+k)+'. '+o+'</label>').join('')+'</div>'}).join('')+
+ '<div class="batch-nav"><button class="action secondary" id="bp">Halaman Sebelumnya</button>'+(page<pages-1?'<button class="action primary" id="bn">Halaman Seterusnya</button>':'<button class="action primary" id="bs">Hantar Seluruh World & Semak</button>')+'</div>';
+ el.querySelectorAll('input[type=radio]').forEach(x=>x.onchange=()=>{answers[+x.name.slice(2)]=+x.value});
+ const bp=document.getElementById('bp');bp.disabled=page===0;bp.onclick=()=>{page--;render();scrollTo({top:0,behavior:'smooth'})};
+ const bn=document.getElementById('bn');if(bn)bn.onclick=()=>{page++;render();scrollTo({top:0,behavior:'smooth'})};
+ const bs=document.getElementById('bs');if(bs)bs.onclick=submit;
+}
+function submit(){
+ const a=qs();if(answers.filter(v=>v!==undefined).length<a.length){alert('Sila jawab semua soalan sebelum menghantar seluruh World.');return}
+ let correct=0,wrong=[];a.forEach((q,i)=>{if(answers[i]===q.a)correct++;else wrong.push({i,q,got:answers[i]})});
+ const pct=Math.round(correct/a.length*100),el=document.getElementById('worldBatchPanel');
+ el.innerHTML='<h2>Keputusan World</h2><div class="gradebox"><b style="font-size:1.5rem">'+correct+' / '+a.length+' ('+pct+'%)</b><p>Betul: '+correct+' · Salah: '+wrong.length+'</p></div>'+
+ (wrong.length?'<h3>Pembetulan & 华语解释</h3>'+wrong.map(x=>'<div class="batch-q"><b>Soalan '+(x.i+1)+'</b><p>'+x.q.q+'</p><p><b>Jawapan anda:</b> '+x.q.o[x.got]+'<br><b>Jawapan betul:</b> '+x.q.o[x.q.a]+'</p><p><b>解释：</b> '+(x.q.zh||x.q.e||'请根据题目的语法关系判断正确用法。')+'</p></div>').join(''):'<p>Semua jawapan betul.</p>');
+ try{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance('Keputusan World. '+correct+' daripada '+a.length+' markah. '+correct+' betul dan '+wrong.length+' salah.');u.lang='ms-MY';u.volume=1;speechSynthesis.speak(u)}catch(e){}
+}
+addEventListener('DOMContentLoaded',()=>setTimeout(ensure,80));
+})();
 </script></body></html>
