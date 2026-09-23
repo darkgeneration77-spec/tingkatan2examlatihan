@@ -201,7 +201,7 @@ function buildWorldList(){
  const wrap=document.getElementById('worldList');wrap.innerHTML='';
  for(let i=1;i<=13;i++){let s=getState(i),pct=Math.round((Object.keys(s.done||{}).length/70)*100);let b=document.createElement('button');b.className='worldbtn'+(i===world?' active':'');b.onclick=()=>switchWorld(i);b.innerHTML=`<strong>World ${String(i).padStart(2,'0')}</strong><small>${DATA[i].title} · ${pct}%</small>`;wrap.appendChild(b)}
 }
-function switchWorld(n){finalMode=false;world=n;localStorage.setItem('t2bm_v2_last_world',String(n));selected=null;checked=false;buildWorldList();render();}
+function switchWorld(n){finalMode=false;world=n;localStorage.setItem('t2bm_v2_last_world',String(n));selected=null;checked=false;buildWorldList();render();try{if(window.__batchSwitchWorld)window.__batchSwitchWorld(n)}catch(e){}}
 function render(){
  let W=DATA[world],S=getState(world); if(S.idx>69)S.idx=69; let Q=W.questions[S.idx];
  document.getElementById('headerWorld').textContent=`World ${String(world).padStart(2,'0')} · ${W.title}`;
@@ -289,8 +289,8 @@ buildWorldList();render();
 <script id="world-batch-mode-v20260923">
 (function(){
 const PER_PAGE=5; let page=0,answers=[];
-function worldNo(){try{return (typeof world!=="undefined"&&world)||Number(localStorage.getItem("t2bm_v2_last_world"))||1}catch(e){return 1}}
-function qs(){try{return DATA[String(worldNo())].questions||[]}catch(e){return[]}}
+function worldNo(){try{return Number(localStorage.getItem("t2bm_v2_last_world"))||1}catch(e){return 1}}
+function qs(){try{const n=worldNo();return (DATA[n]||DATA[String(n)]||{}).questions||[]}catch(e){return[]}}
 function ensure(){
  const old=document.querySelector('.mainGrid > section.card'); if(!old||document.getElementById('worldBatchPanel'))return;
  const panel=document.createElement('section');panel.className='card';panel.id='worldBatchPanel';old.parentNode.insertBefore(panel,old);old.style.display='none';panel.style.display='block';render();
@@ -313,6 +313,7 @@ function submit(){
  (wrong.length?'<h3>Pembetulan & 华语解释</h3>'+wrong.map(x=>'<div class="batch-q"><b>Soalan '+(x.i+1)+'</b><p>'+x.q.q+'</p><p><b>Jawapan anda:</b> '+x.q.o[x.got]+'<br><b>Jawapan betul:</b> '+x.q.o[x.q.a]+'</p><p><b>解释：</b> '+(x.q.zh||x.q.e||'请根据题目的语法关系判断正确用法。')+'</p></div>').join(''):'<p>Semua jawapan betul.</p>');
  try{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance('Keputusan World. '+correct+' daripada '+a.length+' markah. '+correct+' betul dan '+wrong.length+' salah.');u.lang='ms-MY';u.volume=1;speechSynthesis.speak(u)}catch(e){}
 }
+window.__batchSwitchWorld=function(n){page=0;answers=[];setTimeout(()=>{const el=document.getElementById('worldBatchPanel');if(el){el.style.display='block';render()}},0)};
 addEventListener('DOMContentLoaded',()=>setTimeout(ensure,80));
 })();
 </script></body></html>
