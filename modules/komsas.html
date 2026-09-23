@@ -9,7 +9,16 @@ main{padding:24px;max-width:1050px}.world{margin-bottom:55px}.hero,.panel,.zh{ba
 .tip{background:#eef2ff;padding:10px;border-radius:8px}.exam{border:2px solid #d0d5dd}.notice{background:#fef3f2;padding:10px;border-radius:8px}.q{padding:15px 0;border-top:1px solid #e4e7ec}
 textarea{width:100%;min-height:80px;border:1px solid #d0d5dd;border-radius:8px;padding:10px;font:inherit}button{background:#111827;color:white;border:0;padding:9px 12px;border-radius:8px;margin-top:6px}.ans{display:none;background:#f2f4f7;padding:12px;border-radius:8px;margin-top:8px}.ans span{color:#475467}
 @media(max-width:800px){.layout{display:block}nav{position:static;height:auto;max-height:280px}.grid{grid-template-columns:1fr}}
-.mega{border:2px solid #c7d7fe}.bankbox{margin-top:12px}.progress{font-size:13px;color:#667085;margin-bottom:10px}.choice{display:block;width:100%;text-align:left;background:white;color:#182230;border:1px solid #d0d5dd;margin:7px 0}.choice:hover{background:#f8fafc}.result{padding:12px;background:#ecfdf3;border-radius:8px;margin-top:10px}.level{display:inline-block;padding:3px 8px;border-radius:20px;background:#eef2ff;font-size:12px;margin-left:5px}</style></head><body><header><h1>KOMSAS Tingkatan 2 · V3</h1><div>华语理解辅助 + Teks/Bukti + DSKP + UASA-style Question Audit</div></header>
+.mega{border:2px solid #c7d7fe}.bankbox{margin-top:12px}.progress{font-size:13px;color:#667085;margin-bottom:10px}.choice{display:block;width:100%;text-align:left;background:white;color:#182230;border:1px solid #d0d5dd;margin:7px 0}.choice:hover{background:#f8fafc}.result{padding:12px;background:#ecfdf3;border-radius:8px;margin-top:10px}.level{display:inline-block;padding:3px 8px;border-radius:20px;background:#eef2ff;font-size:12px;margin-left:5px}</style><style id="seekbook-ux-v20260923">
+html{font-size:19px}
+body{font-size:19px;line-height:1.65}
+h1{font-size:clamp(1.65rem,3vw,2.25rem)!important}h2{font-size:clamp(1.4rem,2.4vw,1.9rem)!important}h3{font-size:1.22rem!important}
+p,li,td,th,label,input,textarea,select,button,.opt,.context,.feedback,.note,.small,.tag{font-size:1rem!important}
+.qtitle{font-size:1.3rem!important}.opt,button,.action{min-height:48px;padding:13px 16px!important}
+.zh,[class*="zh"],.cn,.chinese{font-size:1rem!important;line-height:1.75!important}
+table{font-size:1rem!important}th,td{padding:11px!important}
+@media(max-width:700px){html{font-size:18px}.content,main{padding-left:12px!important;padding-right:12px!important}}
+</style></head><body><header><h1>KOMSAS Tingkatan 2 · V3</h1><div>华语理解辅助 + Teks/Bukti + DSKP + UASA-style Question Audit</div></header>
 <div class="layout"><nav><a href="#w01"><b>01</b> Pantun Alam Remaja</a><a href="#w02"><b>02</b> Pantun Kiasan</a><a href="#w03"><b>03</b> Pantun Budi</a><a href="#w04"><b>04</b> Pantun Nasihat</a><a href="#w05"><b>05</b> Pantun Kasih Sayang</a><a href="#w06"><b>06</b> Syair Nasihat (Penghujung Thamarat al-Muhimmah)</a><a href="#w07"><b>07</b> Dalam Persekitaran Kata-kata</a><a href="#w08"><b>08</b> Roti</a><a href="#w09"><b>09</b> Kucari Damai di Sini</a><a href="#w10"><b>10</b> Pada Sekuntum Mawar</a><a href="#w11"><b>11</b> Pelanduk Mengajar Memerang</a><a href="#w12"><b>12</b> Banjir di Mata Emak</a><a href="#w13"><b>13</b> Talia dan Raksasa Qadqad</a><a href="#w14"><b>14</b> Menuai Emas</a><a href="#w15"><b>15</b> Mahkamah</a><a href="#final"><b>FINAL</b> Final Challenge</a></nav><main>
 <section class="world" id="w01">
 <div class="hero"><span>WORLD 01</span><h2>Pantun Alam Remaja</h2><p>Puisi Tradisional · Pantun · DSKP 4.1.2</p></div>
@@ -300,4 +309,23 @@ function finalObj(i){let q=FINAL[FI].q,ok=q.opts[i]===q.ans;if(ok)FS++;document.
 function finalScheme(){let q=FINAL[FI].q,t=document.getElementById("finalta");if(!t.value.trim())return;document.getElementById("finalres").innerHTML=`<div class="result"><b>Skema semakan</b><p>${q.ans}</p><button onclick="finalNext()">Seterusnya</button></div>`}
 function finalNext(){if(FI<19){FI++;renderFinal()}else document.getElementById("finalbox").innerHTML=`<div class="result"><h3>Final Challenge selesai</h3><p>Objektif yang dijawab betul: ${FS}. SRT perlu disemak berdasarkan skema.</p></div>`}
 </script>
-<script>(function(){const P=['Bagus! Teruskan!','Hebat! Kamu semakin mahir!','Syabas! Teruskan usaha!','Cemerlang!'];document.addEventListener('click',function(e){let b=e.target.closest('button');if(!b)return;let o=(b.getAttribute('onclick')||'').toLowerCase();if(!/(scheme|mcq|obj|check|jawap|answer)/.test(o))return;setTimeout(function(){try{let u=new SpeechSynthesisUtterance(P[Math.floor(Math.random()*P.length)]);u.lang='ms-MY';u.volume=1;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(x){}},100)},true)})();</script></body></html>
+<script>(function(){const P=['Bagus! Teruskan!','Hebat! Kamu semakin mahir!','Syabas! Teruskan usaha!','Cemerlang!'];document.addEventListener('click',function(e){let b=e.target.closest('button');if(!b)return;let o=(b.getAttribute('onclick')||'').toLowerCase();if(!/(scheme|mcq|obj|check|jawap|answer)/.test(o))return;setTimeout(function(){try{let u=new SpeechSynthesisUtterance(P[Math.floor(Math.random()*P.length)]);u.lang='ms-MY';u.volume=1;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(x){}},100)},true)})();</script><script id="seekbook-score-voice-v20260923">
+(function(){
+  let lastSpoken="";
+  function clean(t){return (t||"").replace(/\s+/g," ").trim()}
+  function speakScore(t){
+    t=clean(t); if(!t||t===lastSpoken||!/((markah|skor|score|betul|salah|ketepatan|%|分|答对|答错))/i.test(t))return;
+    if(t.length>500)t=t.slice(0,500);
+    lastSpoken=t;
+    try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance("Keputusan latihan. "+t);u.lang="ms-MY";u.rate=.92;u.volume=1;speechSynthesis.speak(u)}catch(e){}
+  }
+  function scan(){
+    const sels=["#summary","#result",".result",".summary",".score",".gradebox",".keputusan",".feedback.show"];
+    for(const s of sels)document.querySelectorAll(s).forEach(el=>{
+      const st=getComputedStyle(el); if(st.display!=="none"&&st.visibility!=="hidden")speakScore(el.innerText);
+    });
+  }
+  const mo=new MutationObserver(()=>setTimeout(scan,120));
+  addEventListener("DOMContentLoaded",()=>{mo.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:["class","style"]});});
+})();
+</script></body></html>
