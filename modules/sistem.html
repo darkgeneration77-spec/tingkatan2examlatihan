@@ -45,6 +45,25 @@ p,li,td,th,label,input,textarea,select,button,.opt,.context,.feedback,.note,.sma
 .zh,[class*="zh"],.cn,.chinese{font-size:1rem!important;line-height:1.75!important}
 table{font-size:1rem!important}th,td{padding:11px!important}
 @media(max-width:700px){html{font-size:18px}.content,main{padding-left:12px!important;padding-right:12px!important}}
+</style><style id="chanel-inspired-ui-v20260923">
+:root{--bg:#f5f5f3;--panel:#fff;--ink:#0a0a0a;--muted:#686868;--line:#d8d8d5;--accent:#050505;--accent2:#f1f1ef;--good:#176b45;--bad:#a51f18}
+body{background:#f5f5f3;color:#0a0a0a;letter-spacing:.01em}
+header{background:#050505!important;color:#fff!important;box-shadow:none!important;border-bottom:1px solid #222}
+.hero,.card,.batch-q{border-radius:0!important;border-color:#d7d7d4!important;box-shadow:none!important}
+.hero{border-top:4px solid #050505!important}
+.worldbtn{border-radius:0!important;background:#fff!important;color:#111!important}
+.worldbtn.active{background:#050505!important;color:#fff!important;border-color:#050505!important}
+.worldbtn.active small{color:#ddd!important}
+.stat{border-radius:0!important;background:#fff!important}
+.progressWrap,.masterbar{border-radius:0!important;background:#e4e4e1!important}
+.progress,.masterfill{background:#050505!important}
+.batch-q{border-left:4px solid #050505!important;padding:20px!important}
+.batch-q label{border-radius:0!important;transition:.15s}
+.batch-q label:hover{border-color:#050505!important}
+.batch-q label:has(input:checked){background:#050505!important;color:#fff!important;border-color:#050505!important}
+button.action,.primary,.secondary{border-radius:0!important;text-transform:none;letter-spacing:.02em}
+.primary{background:#050505!important;color:#fff!important}.secondary{background:#fff!important;color:#111!important;border:1px solid #111!important}
+#homeBtnV20260923{border-radius:0!important;background:#050505!important;border:1px solid #fff!important;letter-spacing:.03em}
 </style></head>
 <body><div id="audioToast" class="audio-toast"></div>
 <header><div class="head"><div><h1>Tingkatan 2 Bahasa Melayu · Master V2</h1><div class="sub">13 World · 910 soalan · 60 latihan + 10 Mastery setiap World</div></div><div id="headerWorld">World 01</div></div></header>
@@ -268,6 +287,7 @@ buildWorldList();render();
   let lastSpoken="";
   function clean(t){return (t||"").replace(/\s+/g," ").trim()}
   function speakScore(t){
+    if(document.getElementById("worldBatchPanel")) return;
     t=clean(t); if(!t||t===lastSpoken||!/((markah|skor|score|betul|salah|ketepatan|%|分|答对|答错))/i.test(t))return;
     if(t.length>500)t=t.slice(0,500);
     lastSpoken=t;
@@ -311,7 +331,7 @@ function submit(){
  const pct=Math.round(correct/a.length*100),el=document.getElementById('worldBatchPanel');
  el.innerHTML='<h2>Keputusan World</h2><div class="gradebox"><b style="font-size:1.5rem">'+correct+' / '+a.length+' ('+pct+'%)</b><p>Betul: '+correct+' · Salah: '+wrong.length+'</p></div>'+
  (wrong.length?'<h3>Pembetulan & 华语解释</h3>'+wrong.map(x=>'<div class="batch-q"><b>Soalan '+(x.i+1)+'</b><p>'+x.q.q+'</p><p><b>Jawapan anda:</b> '+x.q.o[x.got]+'<br><b>Jawapan betul:</b> '+x.q.o[x.q.a]+'</p><p><b>解释：</b> '+(x.q.zh||x.q.e||'请根据题目的语法关系判断正确用法。')+'</p></div>').join(''):'<p>Semua jawapan betul.</p>');
- try{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance('Keputusan World. '+correct+' daripada '+a.length+' markah. '+correct+' betul dan '+wrong.length+' salah.');u.lang='ms-MY';u.volume=1;speechSynthesis.speak(u)}catch(e){}
+ try{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance('本次 World 已完成。总题数 '+a.length+' 题。答对 '+correct+' 题，答错 '+wrong.length+' 题。成绩百分比 '+pct+'%。');u.lang='zh-CN';u.rate=.9;u.volume=1;speechSynthesis.speak(u)}catch(e){}
 }
 window.__batchSwitchWorld=function(n){page=0;answers=[];setTimeout(()=>{const el=document.getElementById('worldBatchPanel');if(el){el.style.display='block';render()}},0)};
 addEventListener('DOMContentLoaded',()=>setTimeout(ensure,80));
